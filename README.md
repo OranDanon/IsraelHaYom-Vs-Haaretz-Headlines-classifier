@@ -6,10 +6,9 @@ This project explores machine learning approaches to classify news headlines fro
 ### Key Features
 - Web scraping implementation for data collection from both sources
 - Multiple classification approaches from basic to advanced:
-  - Traditional ML (CountVectorizer + LogisticRegression)
-  - Pre-trained language models (BART)
-  - Advanced fine-tuning techniques (QLoRA)
-  - Feature extraction and shallow fine-tuning
+ - Traditional ML (CountVectorizer + LogisticRegression)
+ - Pre-trained language models (Zero Shot BART, and Feature extraction) 
+ - Advanced fine-tuning techniques (shallow fine-tuning, fully tuned model, and QLoRA)
 - Comprehensive model evaluation and comparison
 - Performance optimization for resource constraints
 
@@ -26,41 +25,34 @@ python -m spacy download en_core_web_lg
 
 ## Data Collection
 The project requires two data sources:
-- Israel Hayom: Web scraping daily archives (e.g., https://www.israelhayom.com/2024/11/26/)
+- Israel Hayom: Web scraping daily archives (e.g., https://www.israelhayom.com/2024/11/26/)  
 - Haaretz: RSS feed processing from XML files
 
 ## Model Training
 The notebook implements several approaches:
 1. Basic Classification:
-   - CountVectorizer + LogisticRegression
-   - Doc2Vec embeddings
-2. Advanced Methods:
-   - BART Feature Extraction
-   - Shallow Fine-tuning
-   - QLoRA (Quantized Low-Rank Adaptation)
+  - CountVectorizer + LogisticRegression
+  - Doc2Vec embeddings
+2. Pre-trained Model Approaches:
+  - BART Feature Extraction - Using embeddings from pre-trained BART (Most resource efficient)
+  - Zero-shot Classification with BART-large-MNLI
+3. Fine-tuning Techniques:
+  - Full Fine-tuning - Complete model parameter updating
+  - Shallow Fine-tuning - Freezing backbone, training only classification head
+    - Most resource efficient among fine-tuning approaches
+  - QLoRA (Quantized Low-Rank Adaptation) - 4-bit quantization with rank decomposition
+  - Author-based Classification (baseline)
 
 ## Performance Notes
 - Best performing model: Fully Tuned BART (F1: 0.940)
 - Most efficient: BART Feature Extraction (F1: 0.932, no training required)
-- Resource-optimized: Shallow Fine-tuning (F1: 0.939, reduced computation)
-
-## Usage Tips
-1. Start with BART Feature Extraction for quick results
-2. Use Shallow Fine-tuning when computational resources are limited
-3. Consider Full Fine-tuning only if maximum performance is required
-4. Monitor memory usage when working with large language models
+- Efficient fine-tuning: Shallow Fine-tuning (F1: 0.939)
 
 ## Important Notes
 - The notebook uses a simplified data split for demonstration
 - For production use, implement proper train/validation/test splits
 - Author-based classification, while performant, should be avoided for style analysis
 - GPU recommended for transformer-based models
-
-## Future Improvements
-- Implement cross-validation for more robust evaluation
-- Add support for newer language models
-- Expand dataset with more recent articles
-- Add multilingual support for Hebrew text
 
 ## Model Comparison Results
 
